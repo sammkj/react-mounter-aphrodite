@@ -1,5 +1,7 @@
 # React Mounter
 
+Uhmmmmmm.....cannot import `meteor/meteor`.......wtf?
+
 React Mounter lets you mount React components to DOM easily.
 
 > React Mounter supports Server Side Rendering when used with [FlowRouter](https://github.com/kadirahq/flow-router).

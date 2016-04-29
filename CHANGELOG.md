@@ -1,5 +1,10 @@
 # Change Log
 
+### v1.3.0
+2015-April-29
+
+* Add support for Aphrodite
+
 ### v1.2.0
 2015-April-09
 
