@@ -1,96 +1,65 @@
-# React Mounter
+# React Mounter Aphrodite
 
-Uhmmmmmm.....cannot import `meteor/meteor`.......wtf?
+React Mounter Aphrodite lets you mount React components to DOM easily with Aphrodite.
 
-React Mounter lets you mount React components to DOM easily.
+> React Mounter Aphrodite supports Server Side Rendering when used with [FlowRouter](https://github.com/kadirahq/flow-router).
+> If you're not using Aphrodite, use react-mounter instead.
 
-> React Mounter supports Server Side Rendering when used with [FlowRouter](https://github.com/kadirahq/flow-router).
-
-Normally, when you are rendering a React Component to the DOM, you need to do following things basically,
-
-* Create a root DOM node as the root node for React
-* Wait for the DOM to load properly
-* Then render the component
-
-React Mounter does all these for you. You just ask it to render a component.
-
-Additionally, React Mounter can work as a simple Layout Manager where you can use with [Flow Router](https://github.com/kadirahq/flow-router).
+React Mounter Aphrodite can work as a simple Layout Manager where you can use with [Flow Router](https://github.com/kadirahq/flow-router).
 
 ## Basic Usage
 
 Install with:
 
 ```
-npm i --save react-mounter react react-dom
+npm i --save react-mounter-aphrodite react react-dom aphrodite
 ```
 
-> `react` and `react-dom` are peerDependencies of `react-mounter`. So, you need to install them into your app manually.
+> `aphrodite`, `react` and `react-dom` are peerDependencies of `react-mounter-aphrodite`. So, you need to install them into your app manually.
 
-Then let's mount a component.
+Create a component with styles:
 
-```js
+```
+import React, { PropTypes } from 'react';
+import { StyleSheet, css } from 'aphrodite';
+
+const styles = StyleSheet.create({
+  red: {
+    backgroundColor: 'red',
+    height: '300px',
+    '@media (min-width: 400px)': {
+      backgroundColor: 'blue',
+    },
+  },
+  random: {
+    backgroundColor: 'blue',
+  },
+});
+
+const Hello = ({ name }) => (
+  <div className={css(styles.red)}>
+    <div className={css(styles.random)}>hello {name()}</div>
+  </div>
+);
+
+```
+
+Rehyrate style tag on client-side (if you use SSR)
+
+```
+if (Meteor.isClient) {
+  StyleSheet.rehydrate(window.renderedClasses);
+}
+```
+
+Mount the component.
+
+```
 import React from 'react';
-import {mount} from 'react-mounter';
+import Hello from '../hello';
+import { mount } from 'react-mounter';
 
-const WelcomeComponent = ({name}) => (<p>Hello, {name}</p>);
-
-mount(WelcomeComponent, {name: 'Arunoda'});
-```
-
-## Using as a Layout Manager
-
-You can user `react-mounter` as a layout Manager for Flow Router. Here's how to do it.
-
-Let's say we've a layout called MainLayout.
-
-```js
-const MainLayout = ({content}) => (
-    <div>
-      <header>
-        This is our header
-      </header>
-      <main>
-        {content}
-      </main>
-    </div>
-);
-```
-
-Now let's try render to our `WelcomeComponent` into the `MainLayout`.
-
-```js
-mount(MainLayout, {
-  content: <WelcomeComponent name="Arunoda" />
-});
-```
-
-That's it.
-
-### To use the React Context
-
-In order to use the React context, you need to render the `content` component inside the layout. So we need to pass a function instead of the React element. Here's how to do it.
-
-```js
-const MainLayout = ({content}) => (
-    <div>
-      <header>
-        This is our header
-      </header>
-      <main>
-        {content()}
-      </main>
-    </div>
-);
-```
-
-> See, now content is a function.
-
-Then, we can pass the Welcome component like this:
-
-```js
-mount(MainLayout, {
-  content: () => (<WelcomeComponent name="Arunoda" />)
-});
+mount(Hello, { name: 'Sam' });
 ```
 
 ## Configure Root DOM node
